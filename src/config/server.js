@@ -1,5 +1,6 @@
 import express from "express"
 import { json } from "body-parser"
+import { conexion } from "./sequelize"
 
 export default class Server {
     constructor(){
@@ -14,8 +15,17 @@ export default class Server {
     }
     start(){
         //Sirver para levantar el servidor en el cual le tenemos que pasar el puerto y si todo es exitoso ingresaremos al callback (segundo parametro)
-        this.app.listen(this.port, () => {
+        this.app.listen(this.port, async () => {
             console.log(`Servidor corriendo en: http//:127.0.0.1:${this.port}`);
+            // esto va a tratar de conectarse con el servido usando las credenciales definidas anteriormente
+            // alter => si hubo algun cambio en la BD volvera a generar SOLAMENTE esos cambios
+            // force => RESETEA (borra) toda la BD y su contenido y lo vuelve a crear de 0, NUNCA USAR ESTO EN MODO PRODUCCION
+            try {
+                await conexion.sync();
+                console.log("Base de datos sincronizada correctamente");
+            } catch (error){
+                console.log(error);
+            }
         })
     }
 }
