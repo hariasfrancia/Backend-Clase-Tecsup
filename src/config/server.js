@@ -25,7 +25,7 @@ export default class Server {
             // force => RESETEA (borra) toda la BD y su contenido y lo vuelve a crear de 0, NUNCA USAR ESTO EN MODO PRODUCCION
             try {
                 // await conexion.sync({ force: true }); => { force: true } con esto se resetea y vuelve a crear la base datos
-                await conexion.sync({ force: true });
+                await conexion.sync();
                 console.log("Base de datos sincronizada correctamente");
             } catch (error) {
                 console.log(error);
