@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { conexion } from "../config/sequelize";
-import { hashSync } from "bcrypt";
+import { compareSync, hashSync } from "bcrypt";
+import { sign } from "jsonwebtoken";
 
 export default () => {
     let usuario = conexion.define(
@@ -42,6 +43,18 @@ export default () => {
     usuario.prototype.setearPassword = function (password) {
         const hash = hashSync(password, 10);
         this.usuarioPassword = hash;
+    };
+    usuario.prototype.validarPassword = function (password) {
+        return compareSync(password, this.usuarioPassword); // verifica si es o no la contraseña onc el hash guardado en la BAseDatos, si la contraseña es correcta retornara TRUE casocontrario FALSE
+    };
+    usuario.prototype.generarJWT = function () {
+        const payload = {
+            usuarioId: this.usuarioId,
+            usuarioCorreo: this.usuarioCorreo,
+        };
+        // 
+        const password = "password";
+        return sign(payload, password, { expiresIn: "1h" });
     };
 
     return usuario;
