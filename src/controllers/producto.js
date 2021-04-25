@@ -9,6 +9,7 @@ export const crearProducto = async (req, res) => {
     // Modelo.buil() => tadavia no crea el regostro en la BD, hace la validacion de que todos los campos se cumplan,  va de la mano con -save() este si retorna una promesa y esto se usa para hacer un pre-configuracion de los campos antes de guardarlos en la BD.
     try {
         // Validacion
+        // https://eloquentjs-es.thedojo.mx/09_regexp.html#h_NUFOUyK+lw
         const validacion = new RegExp(/^[a-zA-Z ]+$/); // expresion regular para todas solamente texto
         if (validacion.test(req.body.productoNombre)) {
             const nuevoProducto = await Producto.create(req.body);
@@ -32,3 +33,20 @@ export const crearProducto = async (req, res) => {
         });
     }
 };
+
+export const listarProductos = async (req, res) => {
+    try {
+        const productos = await Producto.findAll()
+        return res.json({
+            success: true,
+            content: productos,
+            message: null,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            content: error,
+            message: "Error al devover los productos",
+        });
+    }
+}

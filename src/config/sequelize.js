@@ -14,6 +14,7 @@ export const conexion = new Sequelize(
             //sirve para que al momento de mostrar las fechgas, automaticamente las convierta a string y no tener que hacer una converison manual
             dateStrings: true,
         },
+        // logging: true,
         logging: false,
     }
 );

@@ -1,13 +1,17 @@
 import { DataTypes } from "sequelize";
 import { conexion } from "../config/sequelize";
+import { hashSync } from "bcrypt";
 
-export default () =>
-    conexion.define(
+export default () => {
+    let usuario = conexion.define(
         "usuario",
         {
             usuarioId: {
                 field: 'id',
                 type: DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true,
+                unique: true,
             },
             usuarioNombre: {
                 field: 'nombre',
@@ -34,4 +38,13 @@ export default () =>
             timestamps: false,
         }
     );
+    /**Aqui ira la encriptacion y algunos otros metodos PROPIOS DEL MODELO */
+    usuario.prototype.setearPassword = function (password) {
+        const hash = hashSync(password, 10);
+        this.usuarioPassword = hash;
+    };
+
+    return usuario;
+};
+
 
