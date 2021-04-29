@@ -25,6 +25,7 @@ export default () => {
             usuarioCorreo: {
                 field: 'correo',
                 type: DataTypes.STRING(25),
+                unique: true,
                 validate: {
                     isEmail: true,
                 }
