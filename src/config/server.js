@@ -21,6 +21,7 @@ export default class Server {
         this.app.use(producto_router);
         this.app.use(usuario_router);
         this.app.use(categoria_router);
+        this.app.get("/", (req, res) => res.send("Bienvenido a mi API"));
     }
     start() {
         //Sirver para levantar el servidor en el cual le tenemos que pasar el puerto y si todo es exitoso ingresaremos al callback (segundo parametro)
