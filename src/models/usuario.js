@@ -1,3 +1,4 @@
+require("dotenv").config();
 import { DataTypes } from "sequelize";
 import { conexion } from "../config/sequelize";
 import { compareSync, hashSync } from "bcrypt";
@@ -55,7 +56,8 @@ export default () => {
         };
         // 
         const password = "password";
-        return sign(payload, password, { expiresIn: "1h" });
+        // return sign(payload, password, { expiresIn: "1h" });
+        return sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
     };
 
     return usuario;
