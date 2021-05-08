@@ -19,7 +19,7 @@ export class Server {
             // Perimitir los origenes(dominios) par  que puedan consultar a mi API
             res.header("Access-Control-Allow-Origin", "*")
             // Permite las cabeceras siguientes
-            res.header("Access-Control-Allow-Header", "Content-Type, Authorization")
+            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization")
             // Permite los metodos siguientes
             res.header("Access-Control-Allow-Methods", "GET, POST, PUT")
             // Si todo cumple con lo estipulado anteriormente
@@ -41,7 +41,9 @@ export class Server {
             console.log(
                 `Servidor corriendo exitosamente en el puerto ${this.puerto}`
             );
+            // Para la cadena de conexion usar las variables de .env y crear la ariable MONGO_DB
             connect("mongodb://localhost:27017/perfiles", {
+                // https://mongoose.js.com/docs
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useCreateIndex: true,
