@@ -17,3 +17,23 @@ export const subirImagen = async (req, res) => {
         });
     }
 };
+
+export const eliminarImagen = async (req, res) => {
+    // 127.0.0.1:8000/eliminarImagen?nombre=juane.jpg
+    // no usar eliminarImagen, en vez de ello, usar el id del usuario y con ello eliminar el usuario, antes de eliminarlo extraer su url de la imagen y luego sacar el nombre de la imagen y eliminar el usuario y eliminar la imagen de firebase
+    console.log(req.query);
+    const { nombre } = req.query; // destructuracion de un JSON
+    //   const nombre = req.query.nombre;
+    try {
+        const resultado = await eliminarArchivo(nombre);
+        return res.json({
+            success: true,
+            content: resultado,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            content: error,
+        });
+    }
+};
