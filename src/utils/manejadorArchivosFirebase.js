@@ -43,4 +43,6 @@ export const subirArchivo = (archivo) => {
         // en si este es el inicio y fin de la conexion con firebase, luego recien viene los estado de mas arriba
         blobStream.end(archivo.buffer);
     });
-}
+};
+
+const eliminarArchivo = (nombreArchivo) => bucket.file(nombreArchivo).delete();
