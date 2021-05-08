@@ -1,6 +1,8 @@
 import express from "express";
 import { json } from "body-parser";
 import { usuario_router } from "../routes/usuario";
+import { imagen_router } from "../routes/imagen";
+import { connect } from "mongoose";
 // Sirver para utilizar las variables del archivo .env
 require("dotenv").config();
 
@@ -29,6 +31,7 @@ export class Server {
     }
     rutas() {
         this.app.use(usuario_router);
+        this.app.use(imagen_router);
         this.app.get("/", (req, res) => {
             res.send("Bienvenido a mi API 😂");
         });
@@ -38,6 +41,18 @@ export class Server {
             console.log(
                 `Servidor corriendo exitosamente en el puerto ${this.puerto}`
             );
+            connect("mongodb://localhost:27017/perfiles", {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                useCreateIndex: true,
+                useFindAndModify: true,
+            })
+                .then(() => {
+                    console.log("Base de datos conectada exitosamente");
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         });
     }
 }

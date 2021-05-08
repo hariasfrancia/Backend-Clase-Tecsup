@@ -1,7 +1,18 @@
-export const crearUsuario = (req, res) => {
-    // si subimos un solo archivo (sigle) usaremos el parametro <<file>>, caso contrario, si subimos varios archivos (array) usaremos el parametro <<req.files>>
-    console.log(req.file);
-    return res.json({
-        success: true,
-    })
+import { Usuario } from "../models/usuario";
+
+export const crearUsuario = async (req, res) => {
+    try {
+        const usuarioCreado = await Usuario.create(req.body);
+        return res.status(201).json({
+            success: true,
+            content: usuarioCreado,
+            message: "Usuario creado exitosamente",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            content: error,
+            message: "Error al registrar el usuario"
+        });
+    }
 };

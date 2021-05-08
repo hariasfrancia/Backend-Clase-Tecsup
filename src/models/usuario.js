@@ -10,16 +10,17 @@
 // * numero de telefono (required, solo numerico)
 //  No se necesita time stamps para ninguno de los casos
 
-import { Schema, schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const telefonoSchema = new Schema({
     codigo_ciudad: {
         type: Schema.Types.Number,
-        numero: {
-            type: Schema.Types.Number,
-            unique: true,
-            required: true,
-        }
+
+    },
+    numero: {
+        type: Schema.Types.Number,
+        unique: true,
+        required: true,
     }
 },
     {
