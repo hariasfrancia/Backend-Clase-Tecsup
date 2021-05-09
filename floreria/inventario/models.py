@@ -51,6 +51,3 @@ class AlmacenModel(models.Model):
         verbose_name = "almacen"
         # se vera en el listado pero de una manera plural ya que puede contener varios registros
         verbose_name_plural = "almacenes"
-
-
-creacion de modelo almacen
