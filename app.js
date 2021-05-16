@@ -7,9 +7,9 @@ var port = process.env.PORT || 3000
 // Una vez que instlalamos e importamos la libreria, ahora es necesario definir las credenciales para que MP sepa quienes somos (algo asi como cuando usamos firebase)
 mercadopago.configure({
     // el access_token es la token que nos generara MP por cada integracion que realice, esta token es unica por empresa y no debe ser usada en dos pasarelas diferentes ya que la configuracion sera diferente
-    access_token: process.env.access_token,
+    access_token: process.env.ACCESS_TOKEN,
     // integrador_id es la identificacion que nosostros tendremos una vez realizada la certificacion, esta nos ayudara para que MP sepa que desarrollador fue el responsable de dicha integracion
-    integrator_id: process.env.integrator_id,
+    integrator_id: process.env.INTEGRATOR_ID,
 })
 var app = express();
 const cliente = {
