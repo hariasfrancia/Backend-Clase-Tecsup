@@ -55,7 +55,7 @@ const preferencia = {
     payment_methods: metodos_pago,
     payer: cliente,
     auto_return: "approved",
-    notification_url: "",
+    notification_url: "", //Endpoint en el cula mercado pago mandara la actualizacion de nuestro pago mediane un metodo POST, nosotros le tenemos que responder un estado (200-201) para que no haga span en ese endpoint, OJO: no pomer la notoofocation_url en modo localhost ya que MP no creara la preferencia por declara una url  invalida (127.0.0.1 | localhost)
     external_reference: "hariasfrancia@gmail.com",
 }
 
@@ -89,7 +89,8 @@ app.get('/detail', async function (req, res) {
     preferencia.back_urls.failure = `${req.get('host')}/failure`; //http://127.0.0.1:5000
     preferencia.back_urls.success = `${req.get('host')}/success`;
     preferencia.back_urls.pending = `${req.get('host')}/pending`;
-    // el notiication_url solo se puede usar en ambientes de produccion (no localhost no 127.0.0.1) porque es a ese endpoint en el cual se mandara el estado de la pasarela de pago y por ende al identificar uno de los dominios anteriores lanzara un error y no se porcedera con la pasarela
+    preferencia.back_urls.notification_url_url = `${req.get('host')}/notificaciones`; //esta propiedad se define antes de ya subir a produccion
+    // el notificiation_url solo se puede usar en ambientes de produccion (no localhost ni 127.0.0.1) porque es a ese endpoint en el cual se mandara el estado de la pasarela de pago y por ende al identificar uno de los dominios anteriores lanzara un error y no se procedera con la pasarela
     // preferencia.noticication_url = `${req.get('host')}/notificaciones`
     const respuesta = await mercadopago.preferences.create(preferencia);
     console.log(respuesta);
@@ -109,6 +110,15 @@ app.get("/failure", function (req, res) {
 
 app.get("/pending", function (req, res) {
     res.render("pending", req.query);
+})
+
+app.post("/notificaciones", function (req, res) {
+    console.log("INICIO DE NOTIFICACIONES");
+    console.log("MEDIANTE EL QUERY PARAMS");
+    console.log(req.query);
+    console.log("MEDIANTE EL BODY");
+    console.log(req.body);
+    res.status(200);
 })
 
 app.listen(port);
