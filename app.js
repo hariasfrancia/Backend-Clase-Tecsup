@@ -89,7 +89,7 @@ app.get('/detail', async function (req, res) {
     preferencia.back_urls.failure = `${req.get('host')}/failure`; //http://127.0.0.1:5000
     preferencia.back_urls.success = `${req.get('host')}/success`;
     preferencia.back_urls.pending = `${req.get('host')}/pending`;
-    preferencia.back_urls.notification_url_url = `${req.get('host')}/notificaciones`; //esta propiedad se define antes de ya subir a produccion
+    preferencia.notification_url = `${req.get('host')}/notificaciones`; //esta propiedad se define antes de ya subir a produccion
     // el notificiation_url solo se puede usar en ambientes de produccion (no localhost ni 127.0.0.1) porque es a ese endpoint en el cual se mandara el estado de la pasarela de pago y por ende al identificar uno de los dominios anteriores lanzara un error y no se procedera con la pasarela
     // preferencia.noticication_url = `${req.get('host')}/notificaciones`
     const respuesta = await mercadopago.preferences.create(preferencia);
