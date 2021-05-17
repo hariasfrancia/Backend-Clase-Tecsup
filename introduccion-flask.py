@@ -10,6 +10,8 @@ app = Flask(__name__)
 # Es un controlador que se va ejecutar cuando se llame la ruta 127.0.0.1:5000/
 @app.route('/')
 def ruta_inicial():
-    return 'El servidor se ha levantado exitosamente.'
+    return {
+        "message": "El servidor se ha levantado exitosamente"
+    }
 
 app.run(debug=True)
