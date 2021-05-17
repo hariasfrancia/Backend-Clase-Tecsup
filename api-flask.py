@@ -46,6 +46,28 @@ def manejo_supermercados():
 @app.route("/supermercados/<int:id_super>", methods=['GET','PUT','DELETE','PATCH'])
 def manejo_supermercado(id_super):
     print(id_super)
+    # realizar el metodo get (devolver un supermercado dependiendo su ID => posicion en esa lista), delete (eliminar ese supermercado de la laista)
+    if request.method=='GET':
+        if len(supermercados) < id_super:
+            return {
+                "success": False,
+                "content": None,
+                "message":"Indice Incorrecto"
+            },400
+        return {
+            "success": True,
+            "content": supermercados[id_super-1],
+            "message":None
+        }
+        #aqui debe ir el get
+    if request.method=="DELETE":
+        #aqui debe ir el delete
+        supermercados.pop(id_super-1)
+        return {
+            "success": True,
+            "content": None,
+            "message": None
+        }
     return 'ok'
 
 
