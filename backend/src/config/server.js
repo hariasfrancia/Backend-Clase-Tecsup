@@ -1,8 +1,7 @@
-import express from "express"
-import { Server as ServerHttp } from "http"
-import socketio from "socket.io"
-import { json } from "body-parser"
-
+import express from "express";
+import { Server as ServerHttp } from "http";
+import socketio from "socket.io";
+import { json } from "body-parser";
 
 export default class Server {
     constructor() {
@@ -12,9 +11,9 @@ export default class Server {
         this.io = socketio(this.httpServer, {
             cors: {
                 // https://socket.io/docs/v4/handling-cors/
-                origin: "*", //"Access-Control-Allow-Origin" ° para indicar que servicio pueden entrara mi API
-                methods: ["GET", "POST", "PUT"], //"Access-Control-Allow-Methods" para indicar que metodos puede ser consultados mediante mi servicio REST
-                allowedHeaders: ["content-Type", "Authorization"], //"Access-Control-Allow-Headers", | para indicar que tip ode cabeceras pueden ser enviadas a mi servicio REST
+                origin: "*", // Access-Control-Allow-Origin | para indicar que dominios pueden acceder a mi API
+                methods: ["GET", "POST", "PUT"], // Access-Control-Allowed-Methods | para indicar que metodos puede ser consultados mediante mi servicio REST
+                allowedHeaders: ["Content-Type", "Authorization"], // Access-Control-Allowed-Headers | para indicar que tipos de cabeceras pueden ser enviadas a mi servicio REST
             },
         });
         this.cors();
@@ -25,7 +24,7 @@ export default class Server {
     rutas() {
         this.app.get("/", (req, res) => {
             res.json({
-                message: "Bienvenido a mi API de socket🔌",
+                message: "Bienvenido a mi API de sockets 🔌",
             });
         });
     }
@@ -35,18 +34,36 @@ export default class Server {
     cors() {
         this.app.use((req, res, next) => {
             res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Content-Type", "Authorization");
+            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
             res.header("Access-Control-Allow-Methods", "GET, POST, PUT");
             next();
-        })
+        });
     }
     configuracionSockets() {
-        const usuarios = [];
+        let usuarios = [];
         const mensajes = [];
         this.io.on("connect", (cliente) => {
-            // el metodo CONNECT se llmara cuadno un cliente se conecte al servicio de SOCKETS
+            // el metodo connect se llamara cuando un cliente se conecte al servicio de sockets
             console.log("SE CONECTO EL CLIENTE:");
             console.log(cliente.id);
+
+            cliente.on("configurar-cliente", (nombre) => {
+                console.log(nombre);
+                usuarios.push({
+                    id: cliente.id,
+                    nombre,
+                });
+                this.io.emit("lista-usuarios", usuarios);
+            });
+            cliente.on("disconnect", (motivo) => {
+                // quitar el usuario del array y hacer un emit del evento lista-usuarios
+                // USAR EL METODO FILTER de los arrays
+                console.log(`Se desconecto el cliente ${cliente.id}`);
+                usuarios = usuarios.filter((usuario) => usuario.id !== cliente.id);
+                console.log(usuarios);
+                console.log(motivo);
+                this.io.emit("lista-usuarios", usuarios);
+            });
         });
     }
     start() {
