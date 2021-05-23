@@ -1,4 +1,4 @@
-import { schema, model, Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const coordenadasSchema = new Schema(
     {
@@ -7,16 +7,20 @@ const coordenadasSchema = new Schema(
             required: true,
         },
         y: {
-            type: schema.Types.Decimal128,
+            type: Schema.Types.Decimal128,
             required: true,
         },
     },
-    { _id: flase, timestamps: false }
+    { _id: false, timestamps: false }
 );
-
 const usuarioSchema = new Schema(
     {
         nombre: {
+            type: Schema.Types.String,
+            required: true,
+            unique: true,
+        },
+        color: {
             type: Schema.Types.String,
             required: true,
         },
@@ -25,4 +29,4 @@ const usuarioSchema = new Schema(
     { timestamps: false }
 );
 
-export const usuario = model("usuario", usuarioSchema);
+export const Usuario = model("usuario", usuarioSchema);

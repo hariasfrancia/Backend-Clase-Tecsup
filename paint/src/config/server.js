@@ -3,6 +3,7 @@ import { json } from "body-parser";
 import { createServer } from "http";
 import { connect } from "mongoose";
 import { Server as socketio } from "socket.io";
+import { ingresarCoordenada } from "../controllers/sockets";
 require("dotenv").config();
 
 export default class Server {
@@ -15,7 +16,7 @@ export default class Server {
         this.rutas();
         this.escucharSockets();
         if (typeof Server.instance === "object") {
-            console.log("Ya hay unaisntancia creada!")
+            console.log("Ya hay una instancia creada!");
             return Server.instance;
         } else {
             console.log("No hay una instancia creada previamente");
@@ -32,12 +33,13 @@ export default class Server {
         });
     }
     escucharSockets() {
-        console.log("Escuchando los Socket")
+        console.log("Escuchando los sockets");
         this.io.on("connect", (cliente) => {
             console.log(`Se conecto el cliente ${cliente.id}`);
             cliente.on("coordenada", (data) => {
                 console.log(data);
-            })
+                ingresarCoordenada(data, cliente);
+            });
         });
     }
     start() {
@@ -49,8 +51,8 @@ export default class Server {
                 useCreateIndex: true,
                 useFindAndModify: false,
             }).then(() => {
-                console.log("Bd conectada exitosamente")
-            })
+                console.log("Bd conectada exitosamente");
+            });
         });
     }
 }
